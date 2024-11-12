@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import nasaph8210.samahangnayon.fragment.viewpager.CancelFragment;
+import nasaph8210.samahangnayon.fragment.viewpager.CurrentBooking;
 import nasaph8210.samahangnayon.fragment.viewpager.HistoryFragment;
 import nasaph8210.samahangnayon.fragment.viewpager.UpcomingFragment;
 
@@ -23,8 +24,10 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 0:
                 return new UpcomingFragment();
             case 1:
-                return new HistoryFragment();
+                return new CurrentBooking();
             case 2:
+                return new HistoryFragment();
+            case 3:
                 return new CancelFragment();
             default:
                 return new UpcomingFragment();
@@ -34,6 +37,6 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 }

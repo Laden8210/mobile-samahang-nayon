@@ -6,18 +6,18 @@
         android:title="Search"
         android:icon="@drawable/baseline_search_24"/>
 
-    <item
-        android:id="@+id/menu_fav"
-        android:title="My List"
-        android:icon="@drawable/baseline_favorite_border_24"/>
+<!--    <item-->
+<!--        android:id="@+id/menu_fav"-->
+<!--        android:title="My List"-->
+<!--        android:icon="@drawable/baseline_favorite_border_24"/>-->
     <item
         android:id="@+id/menu_booking"
         android:title="Transaction"
         android:icon="@drawable/baseline_dashboard_24"/>
     <item
         android:id="@+id/menu_inbox"
-        android:title="Inbox"
-        android:icon="@drawable/baseline_inbox_24"/>
+        android:title="Message"
+        android:icon="@drawable/baseline_message_24"/>
     <item
         android:id="@+id/menu_profile"
         android:title="Profile"

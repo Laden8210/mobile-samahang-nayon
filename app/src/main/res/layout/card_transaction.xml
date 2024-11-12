@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -25,6 +25,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="12dp">
                 <ImageView
+                    android:id="@+id/room_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/room_example"
@@ -38,29 +39,28 @@
                 android:padding="12dp">
 
                 <TextView
+                    android:id="@+id/date_range_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="July 11, 2024 - July 14, 2024"
+                    android:text="Date Range"
                     android:textSize="12sp"/>
                 <TextView
+                    android:id="@+id/room_type_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Family Room"
+                    android:text="Room Type"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"/>
                 <TextView
+                    android:id="@+id/reservation_number_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Reservation #: 2223-2445-345"
+                    android:text="Reservation #: "
                     android:textSize="12sp"/>
-
             </LinearLayout>
 
-
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

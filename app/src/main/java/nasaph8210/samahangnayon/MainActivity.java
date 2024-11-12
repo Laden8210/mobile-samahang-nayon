@@ -1,6 +1,7 @@
 package nasaph8210.samahangnayon;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -10,6 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import nasaph8210.samahangnayon.util.SessionManager;
+import nasaph8210.samahangnayon.view.HeroActivity;
 import nasaph8210.samahangnayon.view.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,8 +25,15 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnStarted = findViewById(R.id.btnStart);
         btnStarted.setOnClickListener(e ->{
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, HeroActivity.class));
         });
+
+        if (SessionManager.getInstance(this).getToken() != null) {
+            Intent intent = new Intent(this, HeroActivity.class);
+            startActivity(intent);
+        }
+
+
 
     }
 }

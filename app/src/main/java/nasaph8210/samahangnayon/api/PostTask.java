@@ -16,6 +16,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import nasaph8210.samahangnayon.util.SessionManager;
+
 public class PostTask extends AsyncTask<JSONObject, String, String> {
 
     private PostCallback callback;
@@ -41,11 +43,19 @@ public class PostTask extends AsyncTask<JSONObject, String, String> {
 
         try {
             URL url = new URL(ApiAddress.url + apiRequest);
+            Log.d("PostTask", "URL: " + url.toString());
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestProperty("Accept", "application/json");
+
+            if (SessionManager.getInstance(context).getToken() != null){
+                urlConnection.setRequestProperty("Authorization", "Bearer " + SessionManager.getInstance(context).getToken());
+            }else if(postData.has("token")){
+                urlConnection.setRequestProperty("Authorization", "Bearer " + postData.getString("token"));
+            }
 
             DataOutputStream outputStream = new DataOutputStream(urlConnection.getOutputStream());
             outputStream.writeBytes(postData.toString());
@@ -102,12 +112,14 @@ public class PostTask extends AsyncTask<JSONObject, String, String> {
                     e.printStackTrace();
                 }
                 return;
-            } else if (result.contains("error")) {
+            }
+            else if (result.contains("error")) {
                 try {
                     JSONObject jsonError = new JSONObject(result);
                     String errorValue = jsonError.getString("error");
                     callback.onPostError(errorValue);
                 } catch (JSONException e) {
+                    Log.d("PostTask", "Error: " + result);
                     e.printStackTrace();
                 }
                 return;
