@@ -13,9 +13,6 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-
-
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_quantity"
         android:layout_width="match_parent"

@@ -23,6 +23,8 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -353,6 +355,14 @@ public class RegisterActivity extends AppCompatActivity implements PostCallback 
             public void onResponse(Call<List<Region>> call, Response<List<Region>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     regions = response.body();
+
+                    Collections.sort(regions, new Comparator<Region>() {
+                        @Override
+                        public int compare(Region r1, Region r2) {
+                            return r1.getName().compareToIgnoreCase(r2.getName());
+                        }
+                    });
+
                     ArrayAdapter<Region> adapter = new ArrayAdapter<>(
                             RegisterActivity.this,
                             android.R.layout.simple_spinner_item,
@@ -379,6 +389,13 @@ public class RegisterActivity extends AppCompatActivity implements PostCallback 
             public void onResponse(Call<List<City>> call, Response<List<City>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     cities = response.body();
+                    Collections.sort(cities, new Comparator<City>() {
+                        @Override
+                        public int compare(City r1, City r2) {
+                            return r1.getName().compareToIgnoreCase(r2.getName());
+                        }
+                    });
+
                     ArrayAdapter<City> adapter = new ArrayAdapter<>(
                             RegisterActivity.this,
                             android.R.layout.simple_spinner_item,
@@ -405,6 +422,12 @@ public class RegisterActivity extends AppCompatActivity implements PostCallback 
             public void onResponse(Call<List<Barangay>> call, Response<List<Barangay>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     barangays = response.body();
+                    Collections.sort(barangays, new Comparator<Barangay>() {
+                        @Override
+                        public int compare(Barangay r1, Barangay r2) {
+                            return r1.getName().compareToIgnoreCase(r2.getName());
+                        }
+                    });
                     ArrayAdapter<Barangay> adapter = new ArrayAdapter<>(
                             RegisterActivity.this,
                             android.R.layout.simple_spinner_item,

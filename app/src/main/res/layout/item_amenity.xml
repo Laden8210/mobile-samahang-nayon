@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_amenity_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Amenity Name"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_amenity_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="₱0.00"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_amenity_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quantity: 0"
+        android:textSize="14sp" />
+</LinearLayout>

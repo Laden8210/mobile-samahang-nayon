@@ -50,19 +50,16 @@ public class UpcomingFragment extends Fragment implements PostCallback {
 
         Log.d("UpcomingFragment", "onCreateView called");
 
-        // Fetch data initially
         fetchReservations();
 
-        // Setup periodic retrieval of messages
         retrieveMessagesRunnable = new Runnable() {
             @Override
             public void run() {
                 fetchReservations();
-                handler.postDelayed(this, 5000); // Refresh every 5 seconds (adjust if needed)
+                handler.postDelayed(this, 5000);
             }
         };
 
-        // Start the periodic task
         handler.post(retrieveMessagesRunnable);
 
         return view;
@@ -87,7 +84,6 @@ public class UpcomingFragment extends Fragment implements PostCallback {
         Type transactionType = new TypeToken<List<Transaction>>() {}.getType();
         transactionList = gson.fromJson(responseData, transactionType);
 
-        // Make sure the data is actually being parsed correctly
         Log.d("UpcomingFragment", "Transaction List Size: " + transactionList.size());
 
         if (rvTransaction == null) {
@@ -112,8 +108,8 @@ public class UpcomingFragment extends Fragment implements PostCallback {
     @Override
     public void onResume() {
         super.onResume();
-        fetchReservations(); // Refresh data when fragment becomes visible
-        handler.post(retrieveMessagesRunnable); // Start the periodic task
+        fetchReservations();
+        handler.post(retrieveMessagesRunnable);
     }
 
     @Override
@@ -125,7 +121,6 @@ public class UpcomingFragment extends Fragment implements PostCallback {
 
     }
 
-    // Stop periodic data fetching when Fragment is no longer visible
     @Override
     public void onStop() {
         super.onStop();

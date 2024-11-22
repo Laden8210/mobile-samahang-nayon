@@ -22,6 +22,13 @@ public class AmenitiesAdded implements Parcelable {
     public AmenitiesAdded() {
     }
 
+    public AmenitiesAdded(Long amenitiesId, String name, Double price, int quantity) {
+        this.amenitiesId = amenitiesId;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     protected AmenitiesAdded(Parcel in) {
         if (in.readByte() == 0) {
             amenitiesId = null;

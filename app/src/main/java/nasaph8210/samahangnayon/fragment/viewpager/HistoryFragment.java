@@ -42,14 +42,11 @@ public class HistoryFragment extends Fragment implements PostCallback, RefreshRe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-        // Initialize the RecyclerView
         recyclerView = view.findViewById(R.id.rv_transaction);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialize the Handler for periodic updates
         handler = new Handler();
 
-        // Fetch initial data
         fetchReservations();
 
         // Set up periodic refresh every 5 seconds
@@ -57,17 +54,15 @@ public class HistoryFragment extends Fragment implements PostCallback, RefreshRe
             @Override
             public void run() {
                 fetchReservations();
-                handler.postDelayed(this, 5000); // Refresh every 5 seconds
+                handler.postDelayed(this, 5000);
             }
         };
 
-        // Start the periodic refresh
         handler.post(refreshRunnable);
 
         return view;
     }
 
-    // Fetch reservations from the server
     private void fetchReservations() {
         try {
             JSONObject jsonObject = new JSONObject();

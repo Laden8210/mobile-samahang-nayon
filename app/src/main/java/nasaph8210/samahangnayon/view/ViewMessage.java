@@ -45,7 +45,7 @@ public class ViewMessage extends AppCompatActivity implements PostCallback {
         rvMessage.setLayoutManager(new LinearLayoutManager(this));
 
         employeeID = getIntent().getIntExtra("employee_id", 0);
-        Log.d("ViewMessage", "Employee ID: " + employeeID); // Log the employee ID
+        Log.d("ViewMessage", "Employee ID: " + employeeID);
 
         btnSend = findViewById(R.id.imageButton);
         tilMessage = findViewById(R.id.textInputLayout2);
@@ -53,16 +53,14 @@ public class ViewMessage extends AppCompatActivity implements PostCallback {
         btnSend.setOnClickListener(this::sendMessage);
         handler = new Handler();
 
-        // Runnable to periodically retrieve messages
         retrieveMessagesRunnable = new Runnable() {
             @Override
             public void run() {
                 retrieveMessages();
-                handler.postDelayed(this, 1000); // Repeat every second
+                handler.postDelayed(this, 1000);
             }
         };
 
-        // Start the periodic retrieval of messages
         handler.post(retrieveMessagesRunnable);
     }
 
@@ -125,7 +123,7 @@ public class ViewMessage extends AppCompatActivity implements PostCallback {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Stop the periodic message retrieval
+
         handler.removeCallbacks(retrieveMessagesRunnable);
     }
 }

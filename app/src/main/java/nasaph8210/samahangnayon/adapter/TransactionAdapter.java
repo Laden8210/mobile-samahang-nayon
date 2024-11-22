@@ -54,13 +54,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Transaction transaction = transactionList.get(position);
 
-        // Bind data to views
         holder.dateRangeTextView.setText(transaction.getDateCheckIn() + " - " + transaction.getDateCheckOut());
-        holder.roomTypeTextView.setText("Room Type: " + transaction.getRoom().getRoom().getRoomType()); // Customize as needed
+        holder.roomTypeTextView.setText("Room Type: " + transaction.getRoom().getRoom().getRoomType());
         holder.reservationNumberTextView.setText("Reservation #: " + transaction.getReservationId());
 
-        // Optionally set an image (if applicable)
-        holder.roomImageView.setImageResource(R.drawable.room_example); // Change as necessary
+        holder.roomImageView.setImageResource(R.drawable.room_example);
             holder.cardView.setOnClickListener(e -> {
                 Intent intent = new Intent(context, BookingDetailsActivity.class);
                 intent.putExtra("transaction", transaction);
@@ -73,7 +71,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     @Override
     public int getItemCount() {
-        return transactionList.size(); // Return the actual size of the list
+        return transactionList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

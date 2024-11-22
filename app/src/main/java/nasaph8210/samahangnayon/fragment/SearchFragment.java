@@ -57,6 +57,7 @@ public class SearchFragment extends Fragment implements PostCallback, SelectRoom
     private List<Room> roomList;
     private RecyclerView rvRoom;
     private Date checkInDate;
+    private Date checkInDate;
     private Date checkOutDate;
     private String children;
     private String adult;
@@ -262,13 +263,13 @@ public class SearchFragment extends Fragment implements PostCallback, SelectRoom
 
             if (startMillis <= todayMillis) {
                 Messenger.showAlertDialog(getContext(), "Error", "Selected date cannot be in the past.", "OK").show();
-                return; // Prevent further processing
+                return;
             }
 
-            long differenceInDays = (endMillis - startMillis) / (1000 * 60 * 60 * 24); // Convert milliseconds to days
+            long differenceInDays = (endMillis - startMillis) / (1000 * 60 * 60 * 24);
             if (differenceInDays > 10) {
                 Messenger.showAlertDialog(getContext(), "Error", "The maximum number of days is 10.", "OK").show();
-                return; // Prevent further processing
+                return;
             }
 
 
@@ -294,7 +295,7 @@ public class SearchFragment extends Fragment implements PostCallback, SelectRoom
 
 
         long todayMillis = System.currentTimeMillis();
-        builder.setSelection(new Pair<>(todayMillis, todayMillis)); // Default to today
+        builder.setSelection(new Pair<>(todayMillis, todayMillis));
 
         MaterialDatePicker<Pair<Long, Long>> materialDatePicker = builder.build();
 
@@ -308,7 +309,7 @@ public class SearchFragment extends Fragment implements PostCallback, SelectRoom
 
             if (startMillis <= todayMillis) {
                 Toast.makeText(getContext(), "Selected date cannot be in the past.", Toast.LENGTH_SHORT).show();
-                return; // Prevent further processing
+                return;
             }
 
 
@@ -349,7 +350,7 @@ public class SearchFragment extends Fragment implements PostCallback, SelectRoom
     }
     @Override
     public void onRoomSelected(Room room) {
-        // Check if any required information is missing
+
         if (checkInDate == null || checkOutDate == null || adult == null || children == null) {
 
 
@@ -358,15 +359,13 @@ public class SearchFragment extends Fragment implements PostCallback, SelectRoom
                     .setTitle("Missing Information")
                     .setMessage("Please select a date and number of guests.")
                     .setPositiveButton("OK", (dialog, which) -> {
-                        // Optional: Add any action on dialog dismiss
+
                         dialog.dismiss();
                     })
-                    .setCancelable(true) // Allow the dialog to be canceled
+                    .setCancelable(true)
                     .show();
             return;
         }
-
-        // Proceed with the intent if all information is available
 
         if (adult.equals("0") && children.equals("0")) {
             Messenger.showAlertDialog(getContext(), "Error", "Please enter the number of guests.", "OK").show();

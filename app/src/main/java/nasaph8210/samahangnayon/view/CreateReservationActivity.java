@@ -1,6 +1,7 @@
 package nasaph8210.samahangnayon.view;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
@@ -328,80 +329,14 @@ public class CreateReservationActivity extends AppCompatActivity implements Post
     }
 
     private void createReservationAction(View view) {
-
         try {
             JSONObject object = new JSONObject();
             object.put("room_id", room.getRoomId());
             object.put("room_number_id", room.getRoom_number_id());
             object.put("check_in", DateFormatter.formatDate(checkInDate));
             object.put("check_out", DateFormatter.formatDate(checkOutDate));
-            object.put("amenities", amenitiesAddedList);
 
-            if (discountOption.getCheckedRadioButtonId() == R.id.rg_senion) {
-                String seniorIdNumber = tilIdNumber.getEditText().getText().toString();
-
-                // Check if Senior Citizen ID is empty
-                if (seniorIdNumber.isEmpty()) {
-                    Messenger.showAlertDialog(this, "Error", "Samahang Nayon Hotel: Please enter your Senior Citizen ID number", "OK").show();
-                    return;
-                }
-
-                // Validate Senior Citizen ID format (Format: XXX-OSCA-XXXX-XXXXX)
-                if (!seniorIdNumber.matches("^[A-Z]{3}-OSCA-\\d{4}-\\d{5}$")) {
-                    Messenger.showAlertDialog(this, "Error", "Samahang Nayon Hotel: Invalid Senior Citizen ID format. Use \"XXX-OSCA-XXXX-XXXXX\"", "OK").show();
-                    return;
-                }
-
-                object.put("id_number", seniorIdNumber);
-            }
-
-            if (discountOption.getCheckedRadioButtonId() == R.id.rg_pwd) {
-                String idNumber = tilIdNumber.getEditText().getText().toString();
-
-                // Check if PWD ID is empty
-                if (idNumber.isEmpty()) {
-                    Messenger.showAlertDialog(this, "Error", "Samahang Nayon Hotel: Please enter your PWD ID number", "OK").show();
-                    return;
-                }
-
-                // Validate PWD ID format (Format: XXX-XX-XXXX-XXXXXX)
-                if (!idNumber.matches("^[A-Z]{2,3}-\\d{2}-\\d{4}-\\d{6}$")) {
-                    Messenger.showAlertDialog(this, "Error", "Samahang Nayon Hotel: Invalid PWD ID format. Use \"XXX-XX-XXXX-XXXXXX\"", "OK").show();
-                    return;
-                }
-
-                object.put("id_number", idNumber);
-            }
-
-
-
-            int discountSelectedId = discountOption.getCheckedRadioButtonId();
-
-            if (discountSelectedId == R.id.rg_pwd){
-                object.put("discountType", "PWD");
-
-            }else if (discountSelectedId == R.id.rg_senion){
-                object.put("discountType", "Senior Citizen");
-            }else{
-                object.put("discountType", "");
-            }
-
-
-            if (getIntent().hasExtra("children") && getIntent().getStringExtra("children") != null) {
-                object.put("total_children", getIntent().getStringExtra("children").isEmpty() ? 0 : getIntent().getStringExtra("children"));
-            }else{
-                object.put("total_children", 0);
-
-            }
-
-            if (getIntent().hasExtra("adult") && getIntent().getStringExtra("adult") != null) {
-                object.put("total_adult", getIntent().getStringExtra("adult").isEmpty() ? 0 : getIntent().getStringExtra("adult"));
-
-            }else{
-                object.put("total_adult", 0);
-                Log.d("Adult", "0");
-            }
-
+            // Add amenities
             JSONArray amenitiesArray = new JSONArray();
             for (AmenitiesAdded amenity : amenitiesAddedList) {
                 JSONObject amenityObject = new JSONObject();
@@ -429,19 +364,79 @@ public class CreateReservationActivity extends AppCompatActivity implements Post
 
 
 
-            int selectedId = paymentOptionsGroup.getCheckedRadioButtonId();
-            if(selectedId == -1){
-                Messenger.showAlertDialog(this, "Error", "Please select payment option", "OK").show();
+            // Handle discount options
+            int discountOptionId = discountOption.getCheckedRadioButtonId();
+            handleDiscountOption(object, discountOptionId);
+
+            // Add guest details
+            object.put("total_children", getIntentExtra("children", "0"));
+            object.put("total_adult", getIntentExtra("adult", "0"));
+
+            // Handle payment options
+            int paymentOptionId = paymentOptionsGroup.getCheckedRadioButtonId();
+            if (paymentOptionId == -1) {
+                Messenger.showAlertDialog(this, "Error", "Please select a payment option", "OK").show();
                 return;
             }
+            object.put("payment_option", getPaymentOption(paymentOptionId));
 
-            object.put("payment_option", selectedId == R.id.rb_full_payment ? "full" : "partial");
-            loader.showLoader(this);
-            Log.d("Object", object.toString());
-            new PostTask(CreateReservationActivity.this, this, "Error", "create-reservation").execute(object);
+            // Navigate to ConfirmPayment activity
+            Intent intent = new Intent(this, ConfirmPayment.class);
+            String roomRate = tvRoomTotalCost.getText().toString();
+            String totalCost = tvTotalCost.getText().toString();
+
+            intent.putExtra("room_rate", roomRate);
+            intent.putExtra("total_cost", totalCost);
+            intent.putExtra("object", object.toString());
+            startActivity(intent);
+
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            Log.e("CreateReservation", "Error creating reservation JSON", e);
+            Messenger.showAlertDialog(this, "Error", "Failed to create reservation. Please try again.", "OK").show();
         }
+    }
+
+    private void handleDiscountOption(JSONObject object, int discountOptionId) throws JSONException {
+        if (discountOptionId == R.id.rg_senion) {
+            String seniorIdNumber = tilIdNumber.getEditText().getText().toString();
+            if (validateId(seniorIdNumber, "Senior Citizen", "^[A-Z]{3}-OSCA-\\d{4}-\\d{5}$")) {
+                object.put("id_number", seniorIdNumber);
+                object.put("discountType", "Senior Citizen");
+            }
+        } else if (discountOptionId == R.id.rg_pwd) {
+            String pwdIdNumber = tilIdNumber.getEditText().getText().toString();
+            if (validateId(pwdIdNumber, "PWD", "^[A-Z]{2,3}-\\d{2}-\\d{4}-\\d{6}$")) {
+                object.put("id_number", pwdIdNumber);
+                object.put("discountType", "PWD");
+            }
+        } else {
+            object.put("discountType", "");
+        }
+    }
+
+    private boolean validateId(String idNumber, String type, String format) {
+        if (idNumber.isEmpty()) {
+            Messenger.showAlertDialog(this, "Error", "Please enter your " + type + " ID number", "OK").show();
+            return false;
+        }
+        if (!idNumber.matches(format)) {
+            Messenger.showAlertDialog(this, "Error", type + " ID format is invalid. Use the correct format", "OK").show();
+            return false;
+        }
+        return true;
+    }
+
+    private String getIntentExtra(String key, String defaultValue) {
+        return getIntent().hasExtra(key) && getIntent().getStringExtra(key) != null
+                ? getIntent().getStringExtra(key)
+                : defaultValue;
+    }
+
+    private String getPaymentOption(int selectedId) {
+        if (selectedId == R.id.rb_full_payment) return "full";
+        if (selectedId == R.id.rb_partial_payment) return "partial";
+        if (selectedId == R.id.rb_pay_later) return "pay_later";
+        return "";
     }
 
     private void initPaymentListener() {
@@ -467,6 +462,27 @@ public class CreateReservationActivity extends AppCompatActivity implements Post
     public void onPostSuccess(String responseData) {
         loader.dismissLoader();
         try {
+
+
+            int selectedId = paymentOptionsGroup.getCheckedRadioButtonId();
+
+            if(selectedId == R.id.rb_pay_later) {
+                Messenger.showAlertDialog(this, "Success", "Reservation created successfully", "OK", "Back",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(CreateReservationActivity.this, HeroActivity.class));
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(CreateReservationActivity.this, HeroActivity.class));
+                            }
+                        }
+                ).show();
+                return;
+            }
+
 
             JSONObject jsonObject = new JSONObject(responseData);
             JSONObject dataObject = jsonObject.getJSONObject("data");

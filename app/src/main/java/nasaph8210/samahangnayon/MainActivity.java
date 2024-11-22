@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import nasaph8210.samahangnayon.util.SessionManager;
 import nasaph8210.samahangnayon.view.HeroActivity;
 import nasaph8210.samahangnayon.view.LoginActivity;
+import nasaph8210.samahangnayon.view.VerifyLoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, HeroActivity.class));
         });
 
-        if (SessionManager.getInstance(this).getToken() != null) {
-            Intent intent = new Intent(this, HeroActivity.class);
-            startActivity(intent);
-        }
+
+        Intent intent = new Intent(this, HeroActivity.class);
+        startActivity(intent);
+
 
 
 

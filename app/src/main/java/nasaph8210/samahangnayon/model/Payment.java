@@ -34,6 +34,7 @@ public class Payment {
     @SerializedName("Purpose")
     private String purpose;
 
+
     public Payment() {
     }
 

@@ -73,6 +73,7 @@ public class BookingDetailsActivity extends AppCompatActivity {
     private TextView tvRoomPrice, tvRoomType, tvCheckIn, tvCheckout, tvGuest, tvLengthOfStay;
 
     private Button btnAddAmenties;
+    private Button btnPaymentHistory;
     private AmenitiesFragment amenitiesFragment;
 
     private TextView tvRoomNumber;
@@ -97,12 +98,19 @@ public class BookingDetailsActivity extends AppCompatActivity {
         recyclerViewGuests = findViewById(R.id.recycler_view_guests);
         btnCancelReservation = findViewById(R.id.btn_cancel_booking);
         btnAddAmenties = findViewById(R.id.btn_add_amenities);
+        btnPaymentHistory = findViewById(R.id.btn_view_payment);
         fabAdGuest.setOnClickListener(this::addGuestAction);
 
         btnAddAmenties.setOnClickListener(this::addAmenities);
 
+
         if (getIntent().hasExtra("transaction")) {
             transaction = getIntent().getParcelableExtra("transaction");
+            btnPaymentHistory.setOnClickListener(e ->{
+                Intent intent = new Intent(this, PaymentHistoryActivity.class);
+                intent.putExtra("reservation_id", transaction.getReservationId());
+                startActivity(intent);
+            });
             displayTransactionDetails();
         }
 
@@ -276,6 +284,8 @@ public class BookingDetailsActivity extends AppCompatActivity {
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("reservation_id", transaction.getReservationId());
+
+
 
             new PostTask(this, new PostCallback() {
                 @Override

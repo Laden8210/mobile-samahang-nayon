@@ -95,6 +95,4 @@ public class BookingFragment extends Fragment {
 
         return view;
     }
-
-
 }

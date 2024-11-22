@@ -4,6 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +23,15 @@
         android:theme="@style/Theme.SamahangNayon"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".view.ConfirmPayment"
+            android:exported="false" />
+        <activity
+            android:name=".view.PaymentHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.VerifyLoginActivity"
+            android:exported="false" />
         <activity
             android:name=".view.CancelReservationActivity"
             android:exported="false"

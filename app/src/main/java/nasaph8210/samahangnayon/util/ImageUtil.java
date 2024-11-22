@@ -13,8 +13,13 @@ import nasaph8210.samahangnayon.R;
 public class ImageUtil {
 
     public static void createImage(Context context, String base64Image, ImageView imageView){
-        byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        Glide.with(context).load(decodedByte).placeholder(R.drawable.loading).into(imageView);
+        try{
+            byte[] decodedString = Base64.decode(base64Image, Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            Glide.with(context).load(decodedByte).placeholder(R.drawable.loading).into(imageView);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

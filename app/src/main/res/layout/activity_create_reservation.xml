@@ -350,13 +350,20 @@
                     android:id="@+id/rb_full_payment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pay P1000 now to finalize your booking" />
+                android:text="Pay Full payment now" />
 
                 <RadioButton
                     android:id="@+id/rb_partial_payment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="You can make a partial payment now and pay the remaining amount when you check in" />
+
+                <RadioButton
+                    android:id="@+id/rb_pay_later"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pay Later" />
+
             </RadioGroup>
 
 

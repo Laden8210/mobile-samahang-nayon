@@ -28,12 +28,20 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_cancel_booking"
         tools:layout_editor_absoluteX="24dp" />
 
+    <Button
+        android:id="@+id/btn_view_payment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Payment History"
+        app:layout_constraintBottom_toTopOf="@+id/btn_add_amenities"
+        tools:layout_editor_absoluteX="12dp" />
+
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_add_amenities"
+        app:layout_constraintBottom_toTopOf="@+id/btn_view_payment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

@@ -27,7 +27,7 @@ import nasaph8210.samahangnayon.api.PostTask;
 import nasaph8210.samahangnayon.callback.RefreshReservation;
 import nasaph8210.samahangnayon.model.Transaction;
 
-public class CurrentBooking extends Fragment implements PostCallback, RefreshReservation {
+public class    CurrentBooking extends Fragment implements PostCallback, RefreshReservation {
 
     private RecyclerView rvTransaction;
     private Handler handler;

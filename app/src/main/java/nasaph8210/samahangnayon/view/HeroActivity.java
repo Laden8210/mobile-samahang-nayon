@@ -1,6 +1,8 @@
 package nasaph8210.samahangnayon.view;
 
+import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -14,6 +16,7 @@ import nasaph8210.samahangnayon.fragment.BookingFragment;
 import nasaph8210.samahangnayon.fragment.InboxFragment;
 import nasaph8210.samahangnayon.fragment.ProfileFragment;
 import nasaph8210.samahangnayon.fragment.SearchFragment;
+import nasaph8210.samahangnayon.util.SessionManager;
 
 public class HeroActivity extends AppCompatActivity {
 
@@ -25,7 +28,18 @@ public class HeroActivity extends AppCompatActivity {
         BottomNavigationView bnvHero = findViewById(R.id.bnvHero);
 
         if (savedInstanceState == null) {
-            loadFragment(new SearchFragment()); // Replace with your default fragment
+            loadFragment(new SearchFragment());
+        }
+
+
+        if (SessionManager.getInstance(this).getToken() != null) {
+
+            if (SessionManager.getInstance(this).isVerified() == false) {
+
+                Intent intent = new Intent(this, VerifyLoginActivity.class);
+                startActivity(intent);
+            }
+
         }
 
         bnvHero.setOnNavigationItemSelectedListener(item -> {
@@ -60,8 +74,8 @@ public class HeroActivity extends AppCompatActivity {
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.nfvHero, fragment); // Use your actual container ID
-            fragmentTransaction.addToBackStack(null); // Add to back stack if you want to allow back navigation
+            fragmentTransaction.replace(R.id.nfvHero, fragment);
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
             return true;
         }
